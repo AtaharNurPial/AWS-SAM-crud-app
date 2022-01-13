@@ -10,6 +10,18 @@ Globals:
   Function:
     Timeout: 10
 
+Parameters:
+  # Region:
+  #   Type: String
+  #   Default: us-east-2
+  # AWSEnv:
+  #   Type: String
+  #   Default: AWS  
+  Table:
+    Type: String
+    Default: Activities
+
+
 Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function 
@@ -36,14 +48,36 @@ Resources:
       Environment:  
         Variables:
           TABLE: !Ref Table
-          REGION: !Ref Region
-          AWSENV: !Ref AWSEnv
+          # REGION: !Ref Region
+          # AWSENV: !Ref AWSEnv
       Events:
         CreateOperation:
           Type: Api
           Properties:
             Path:  /operations/
             Method: post
+
+  ActivitiesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "id"
+          AttributeType: "S"
+        -
+          AttributeName: "date"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "id"
+          KeyType: "HASH"
+        -
+          AttributeName: "date"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+      TableName: "Activities"
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

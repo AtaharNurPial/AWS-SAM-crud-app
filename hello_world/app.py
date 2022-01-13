@@ -1,4 +1,4 @@
-from email import header
+# from email import header
 import json
 import os
 #import uuid
@@ -11,8 +11,8 @@ import boto3
 def lambda_handler(event, context):
 
     table_name = os.environ.get('TABLE', 'Activities')
-    region = os.environ.get('REGION', 'us-east-2')
-    aws_environment = os.environ.get('AWSENV', 'AWS')
+    # region = os.environ.get('REGION', 'us-east-2')
+    # aws_environment = os.environ.get('AWSENV', 'AWS')
 
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(table_name)
