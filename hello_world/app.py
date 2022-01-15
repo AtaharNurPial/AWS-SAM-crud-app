@@ -23,11 +23,11 @@ def lambda_handler(event, context):
         'stage': activity['stage'],
         'description': activity['description']
     }
-    response = table.put_item(
-        TableName=table_name,
-        Item=params
-    )
-    print(response)
+    # response = table.put_item(
+    #     TableName=table_name,
+    #     Item=params
+    # )
+    # print(response)
    
     return {
         "statusCode": 200,

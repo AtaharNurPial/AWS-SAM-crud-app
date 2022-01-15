@@ -54,8 +54,11 @@ Resources:
         CreateOperation:
           Type: Api
           Properties:
-            Path:  /operations/
+            Path:  /activities
             Method: post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ActivitiesTable
 
   ActivitiesTable:
     Type: AWS::DynamoDB::Table
