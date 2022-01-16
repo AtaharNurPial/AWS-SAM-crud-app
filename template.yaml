@@ -8,7 +8,7 @@ Description: >
 
 Globals:
   Function:
-    Timeout: 10
+    Timeout: 30
 
 Parameters:
   # Region:
@@ -55,10 +55,58 @@ Resources:
           Type: Api
           Properties:
             Path:  /activities
+            Method: get
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ActivitiesTable
+
+  ReadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/Read-function/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Architectures:
+        - x86_64
+      Environment:  
+        Variables:
+          TABLE: !Ref Table
+          # REGION: !Ref Region
+          # AWSENV: !Ref AWSEnv
+      Events:
+        CreateOperation:
+          Type: Api
+          Properties:
+            Path:  /activities/{id}
             Method: post
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
+
+  UpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/Update-function/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Architectures:
+        - x86_64
+      Environment:  
+        Variables:
+          TABLE: !Ref Table
+          # REGION: !Ref Region
+          # AWSENV: !Ref AWSEnv
+      Events:
+        CreateOperation:
+          Type: Api
+          Properties:
+            Path:  /activities/{id}
+            Method: put
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ActivitiesTable
+
+
 
   ActivitiesTable:
     Type: AWS::DynamoDB::Table

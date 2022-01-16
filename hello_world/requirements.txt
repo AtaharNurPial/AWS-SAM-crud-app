@@ -1,3 +1,5 @@
 requests
 boto3
 #uuid
+
+#create-event: "body": "{\"stage\": \"new stage\",\"description\": \"New activity\"}"
