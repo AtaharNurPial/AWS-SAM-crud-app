@@ -55,7 +55,7 @@ Resources:
           Type: Api
           Properties:
             Path:  /activities
-            Method: get
+            Method: post
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
