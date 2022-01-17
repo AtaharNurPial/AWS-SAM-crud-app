@@ -23,24 +23,10 @@ Parameters:
 
 
 Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function 
-    Properties:
-      CodeUri: hello_world/
-      Handler: app.lambda_handler
-      Runtime: python3.8
-      Architectures:
-        - x86_64
-      Events:
-        HelloWorld:
-          Type: Api 
-          Properties:
-            Path: /hello
-            Method: get
   CreateFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: hello_world/
+      CodeUri: hello_world/Create-function/
       Handler: app.lambda_handler
       Runtime: python3.8
       Architectures:
