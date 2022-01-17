@@ -6,7 +6,7 @@ from boto3.dynamodb.conditions import Key
 table_name = os.environ.get('TABLE', 'Activities')
 region = os.environ.get('REGION', 'us-east-2')
 
-def lambda_handler(message, context):
+def lambda_handler(event, context):
 
     dynamodb = boto3.resource('dynamodb')
     # if not dynamodb:
@@ -15,10 +15,10 @@ def lambda_handler(message, context):
     #     dynamodb = boto3.resource('dynamodb',  region_name=region)
         
     table = dynamodb.Table(table_name)
-    activity_id = message['pathParameters']['id']
+    activity = event['id']
 
     response = table.query(
-        KeyConditionExpression=Key('id').eq(activity_id)
+        KeyConditionExpression=Key('id').eq(activity)
     )
     print(response)
 

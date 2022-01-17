@@ -92,7 +92,28 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
 
-
+  DeleteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/Delete-function/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Architectures:
+        - x86_64
+      Environment:  
+        Variables:
+          TABLE: !Ref Table
+          # REGION: !Ref Region
+          # AWSENV: !Ref AWSEnv
+      Events:
+        CreateOperation:
+          Type: Api
+          Properties:
+            Path:  /activities/{id}/{date}
+            Method: delete
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ActivitiesTable
 
   ActivitiesTable:
     Type: AWS::DynamoDB::Table

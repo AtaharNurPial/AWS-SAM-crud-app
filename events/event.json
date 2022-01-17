@@ -1,5 +1,5 @@
 {
-  "body": "{\"id\": \"#123456789\", \"stage\": \"PROD\", \"description\": \"Activity Updated\"}",
+  "body": null,
   "resource": "/{proxy+}",
   "path": "/path/to/resource",
   "httpMethod": "GET",
