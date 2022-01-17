@@ -12,18 +12,19 @@ def lambda_handler(event, context):
     # if not dynamodb:
     #     dynamodb = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
     # else:
-    #     dynamodb = boto3.resource('dynamodb',  region_name=region)
+    #     dynamodb = boto3.resource('dynamodb')
         
     table = dynamodb.Table(table_name)
-    activity = event['id']
+    activity = json.loads(event['body'])
 
-    response = table.query(
-        KeyConditionExpression=Key('id').eq(activity)
-    )
-    print(response)
+    # response = table.get_item(
+    #     Key={'id': activity}
+    #     )
+    # items = response['Item']
+    # print(items)
 
     return {
         'statusCode': 200,
         'headers': {},
-        'body': json.dumps(response['Items'])
+        'body': json.dumps({'ItemID': '1234569'})
     }

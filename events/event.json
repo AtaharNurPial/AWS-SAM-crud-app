@@ -1,5 +1,5 @@
 {
-  "body": null,
+  "body": "{\"id\": \"#1234569\"}",
   "resource": "/{proxy+}",
   "path": "/path/to/resource",
   "httpMethod": "GET",
