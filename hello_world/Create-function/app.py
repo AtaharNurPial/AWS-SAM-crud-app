@@ -1,5 +1,3 @@
-# from email import header
-from email import message
 import json
 import os
 #import uuid

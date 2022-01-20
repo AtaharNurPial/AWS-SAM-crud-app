@@ -5,7 +5,6 @@ Description: >
 
   Sample SAM Template for crud-app
 
-
 Globals:
   Function:
     Timeout: 30
@@ -27,8 +26,7 @@ Resources:
     Type: AWS::Serverless::Function 
     Properties:
       CodeUri: hello_world/
-      Handler: app.lambda_handler
-      # Runtime: python3.8
+      Handler: app.lambda_handler     
       Architectures:
         - x86_64
       Events:
@@ -42,8 +40,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/Create-function/
-      Handler: app.lambda_handler
-      # Runtime: python3.8
+      Handler: app.lambda_handler   
       Architectures:
         - x86_64
       Environment:  
@@ -57,12 +54,6 @@ Resources:
           Properties:
             Path:  /activities
             Method: post
-        SQSEvent:
-          Type: SQS
-          Properties:
-            Queue: !GetAtt RawQueue.Arn
-            BatchSize: 10
-            Enabled: true
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
@@ -71,8 +62,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/Read-function/
-      Handler: app.lambda_handler
-      # Runtime: python3.8
+      Handler: app.lambda_handler     
       Architectures:
         - x86_64
       Environment:  
@@ -86,6 +76,7 @@ Resources:
           Properties:
             Path:  /activities/{id}
             Method: post
+        SQSEvent:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
@@ -94,8 +85,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/Update-function/
-      Handler: app.lambda_handler
-      # Runtime: python3.8
+      Handler: app.lambda_handler     
       Architectures:
         - x86_64
       Environment:  
@@ -117,8 +107,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/Delete-function/
-      Handler: app.lambda_handler
-      # Runtime: python3.8
+      Handler: app.lambda_handler   
       Architectures:
         - x86_64
       Environment:  
@@ -135,6 +124,19 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
+
+  TriggerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/Trigger-function/
+      Handler: app.lambda_handler
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt RawQueue.Arn
+            BatchSize: 10
+            Enabled: true
 
   ActivitiesTable:
     Type: AWS::DynamoDB::Table
