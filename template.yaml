@@ -76,7 +76,6 @@ Resources:
           Properties:
             Path:  /activities/{id}
             Method: post
-        SQSEvent:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
