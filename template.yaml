@@ -9,6 +9,7 @@ Description: >
 Globals:
   Function:
     Timeout: 30
+    Runtime: python3.8
 
 Parameters:
   # Region:
@@ -27,7 +28,7 @@ Resources:
     Properties:
       CodeUri: hello_world/
       Handler: app.lambda_handler
-      Runtime: python3.8
+      # Runtime: python3.8
       Architectures:
         - x86_64
       Events:
@@ -42,7 +43,7 @@ Resources:
     Properties:
       CodeUri: hello_world/Create-function/
       Handler: app.lambda_handler
-      Runtime: python3.8
+      # Runtime: python3.8
       Architectures:
         - x86_64
       Environment:  
@@ -56,6 +57,12 @@ Resources:
           Properties:
             Path:  /activities
             Method: post
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt RawQueue.Arn
+            BatchSize: 10
+            Enabled: true
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
@@ -65,7 +72,7 @@ Resources:
     Properties:
       CodeUri: hello_world/Read-function/
       Handler: app.lambda_handler
-      Runtime: python3.8
+      # Runtime: python3.8
       Architectures:
         - x86_64
       Environment:  
@@ -88,7 +95,7 @@ Resources:
     Properties:
       CodeUri: hello_world/Update-function/
       Handler: app.lambda_handler
-      Runtime: python3.8
+      # Runtime: python3.8
       Architectures:
         - x86_64
       Environment:  
@@ -111,7 +118,7 @@ Resources:
     Properties:
       CodeUri: hello_world/Delete-function/
       Handler: app.lambda_handler
-      Runtime: python3.8
+      # Runtime: python3.8
       Architectures:
         - x86_64
       Environment:  
@@ -151,10 +158,24 @@ Resources:
         WriteCapacityUnits: "5"
       TableName: "Activities"
 
+  DeadLetter:
+    Type: AWS::SQS::Queue
+
+  RawQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      DelaySeconds: 0
+      # MessageRetentionPerion: 1209600
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt DeadLetter.Arn
+        maxReceiveCount: 4
+      # Tags:
+      #   - Key: Practice
+      #   Value: SQS
+      VisibilityTimeout: 120
+
+
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
@@ -164,3 +185,7 @@ Outputs:
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt HelloWorldFunctionRole.Arn
+
+  RawSqsUrl:
+    Description: URL of the sqs event
+    Value: !Ref RawQueue
