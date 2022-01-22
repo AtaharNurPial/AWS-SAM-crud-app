@@ -18,7 +18,7 @@ def lambda_handler(message, context):
     activity = json.loads(message['body'])
     sqs = boto3.client('sqs')
 
-    response = sqs.send_message(
+    sqs_response = sqs.send_message(
     QueueUrl=queue_url,
     DelaySeconds=10,
     MessageAttributes={
@@ -47,20 +47,20 @@ def lambda_handler(message, context):
         # 'description': activity['description']
     }
 
-    # response = table.update_item(
-    #     Key = params,
-    #     UpdateExpression = "set stage = :s, description = :d",
-    #     ExpressionAttributeValues = {
-    #         ':s': activity['stage'],
-    #         ':d': activity['description']
-    #     },
-    #     ReturnValues = "UPDATED_NEW"
-    # )
-    # print(response)
+    table_response = table.update_item(
+        Key = params,
+        UpdateExpression = "set stage = :s, description = :d",
+        ExpressionAttributeValues = {
+            ':s': activity['stage'],
+            ':d': activity['description']
+        },
+        ReturnValues = "UPDATED_NEW"
+    )
+    print(table_response)
 
     return{
         'statusCode': 200,
         'headers': {},
-        'messageId': json.dumps(response['MessageId']),
+        'messageId': json.dumps(sqs_response['MessageId']),
         'body': json.dumps({'message': 'Operation updated'})
     }

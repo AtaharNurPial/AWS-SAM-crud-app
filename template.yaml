@@ -81,8 +81,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
-        # - RawQueuePolicy:
-        #     QueueName: !Ref RawQueue
+        - RawQueuePolicy:
+            QueueName: !Ref RawQueue
 
   UpdateFunction:
     Type: AWS::Serverless::Function

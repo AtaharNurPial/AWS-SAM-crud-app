@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     activity = json.loads(event['body'])
     sqs = boto3.client('sqs')
 
-    response = sqs.send_message(
+    sqs_response = sqs.send_message(
     QueueUrl=queue_url,
     DelaySeconds=10,
     MessageAttributes={
@@ -42,15 +42,15 @@ def lambda_handler(event, context):
 )
 
 
-    # response = table.get_item(
-    #     Key={'id': activity}
-    #     )
-    # items = response['Item']
-    # print(items)
+    table_response = table.get_item(
+        Key={'id': activity}
+        )
+    items = table_response['Item']
+    print(items)
 
     return {
         'statusCode': 200,
         'headers': {},
-        'messageId': json.dumps(response['MessageId']),
+        'messageId': json.dumps(sqs_response['MessageId']),
         'body': json.dumps({'ItemID': '1234569'})
     }

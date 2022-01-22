@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     activity = json.loads(event['body'])
     sqs = boto3.client('sqs')
 
-    response = sqs.send_message(
+    sqs_response = sqs.send_message(
     QueueUrl=queue_url,
     DelaySeconds=10,
     MessageAttributes={
@@ -43,14 +43,14 @@ def lambda_handler(event, context):
         'date': activity['date']
     }
 
-    # response = table.delete_item(
-    #     Key = params
-    # )
-    # print(response)
+    table_response = table.delete_item(
+        Key = params
+    )
+    print(table_response)
 
     return{
         'statusCode': 200,
         'headers': {},
-        'messageId': json.dumps(response['MessageId']),
+        'messageId': json.dumps(sqs_response['MessageId']),
         'body': json.dumps({'message': 'Operation Deleted'})
     }
