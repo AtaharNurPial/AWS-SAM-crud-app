@@ -38,8 +38,9 @@ def lambda_handler(message, context):
     MessageBody=(
         'Information about current NY Times fiction bestseller for '
         'week of 12/11/2016.'
+        )
     )
-)
+    print(sqs_response.get('MessageId'))
 
 
     params = {
@@ -61,6 +62,6 @@ def lambda_handler(message, context):
     return{
         'statusCode': 200,
         'headers': {},
-        'messageId': json.dumps(sqs_response['MessageId']),
+        # 'messageId': json.dumps(sqs_response['MessageId']),
         'body': json.dumps({'message': 'Operation updated'})
     }

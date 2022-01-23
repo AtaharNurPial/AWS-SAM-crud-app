@@ -35,8 +35,9 @@ def lambda_handler(event, context):
     MessageBody=(
         'Information about current NY Times fiction bestseller for '
         'week of 12/11/2016.'
+        )
     )
-)
+    print(sqs_response.get('MessageId'))
 
     params = {
         'id': activity['id'],
@@ -51,6 +52,6 @@ def lambda_handler(event, context):
     return{
         'statusCode': 200,
         'headers': {},
-        'messageId': json.dumps(sqs_response['MessageId']),
+        # 'messageId': json.dumps(sqs_response['MessageId']),
         'body': json.dumps({'message': 'Operation Deleted'})
     }

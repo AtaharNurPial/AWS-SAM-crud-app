@@ -38,19 +38,18 @@ def lambda_handler(event, context):
     MessageBody=(
         'Information about current NY Times fiction bestseller for '
         'week of 12/11/2016.'
+        )
     )
-)
-
+    print(sqs_response.get('MessageId'))
 
     table_response = table.get_item(
         Key={'id': activity}
         )
-    items = table_response['Item']
-    print(items)
+    print(table_response)
 
     return {
         'statusCode': 200,
         'headers': {},
-        'messageId': json.dumps(sqs_response['MessageId']),
+        # 'messageId': json.dumps(sqs_response['MessageId']),
         'body': json.dumps({'ItemID': '1234569'})
     }

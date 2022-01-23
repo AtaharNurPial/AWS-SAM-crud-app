@@ -48,11 +48,11 @@ def lambda_handler(event, context):
     MessageBody=(
         'Information about current NY Times fiction bestseller for '
         'week of 12/11/2016.'
+        )
     )
-)
+    print(sqs_response.get('MessageId'))
 
     params = {
-        #'id': str(uuid.uuid4()),
         'stage': activity['stage'], 
         'description': activity['description']
     }
@@ -60,11 +60,10 @@ def lambda_handler(event, context):
         TableName=table_name,
         Item=params
     )
-    # print(response)
+    print(table_response)
    
     return {
         'statusCode': 200,
         'header': {},
-        'messageId': json.dumps(sqs_response['MessageId']),
-        'body': json.dumps(table_response[table_name][params])
-        }
+        'body': json.dumps({'message': 'Activity Created!!!'})
+    }

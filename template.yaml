@@ -57,6 +57,10 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
+        - SQSPollerPolicy:
+            QueueName: !Ref RawQueuePolicy
+        # - SQSPollerPolicy:
+        #     QueueName: !GetAtt RawQueuePolicy.Arn
         # - RawQueuePolicy:
         #     QueueName: !Ref RawQueue
 
@@ -81,8 +85,12 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
-        - RawQueuePolicy:
-            QueueName: !Ref RawQueue
+        - SQSPollerPolicy:
+            QueueName: !Ref RawQueuePolicy
+        # - SQSPollerPolicy:
+        #     QueueName: !GetAtt RawQueuePolicy.Arn
+        # - SQSPollerPolicy:
+        #     QueueName: !GetAtt RawQueue.RawQueuePolicy
 
   UpdateFunction:
     Type: AWS::Serverless::Function
