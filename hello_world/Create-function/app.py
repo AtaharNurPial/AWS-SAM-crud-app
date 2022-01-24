@@ -26,12 +26,12 @@ def lambda_handler(event, context):
 
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(table_name)
-    activity = json.loads(event['body'])
+    activity = json.loads(event["body"])
     sqs = boto3.client('sqs')
 
     sqs_response = sqs.send_message(
     QueueUrl = queue_url,
-    MessageBody = json.dumps(event['body'])
+    MessageBody = json.dumps(event["body"])
     )
     print(sqs_response.get('messageId'))
 
