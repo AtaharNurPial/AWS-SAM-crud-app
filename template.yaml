@@ -57,7 +57,7 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
-        - SQSPollerPolicy:
+        - SQSSendMessagePolicy:
             QueueName: !Ref RawQueuePolicy
         # - SQSPollerPolicy:
         #     QueueName: !GetAtt RawQueuePolicy.Arn
@@ -85,7 +85,7 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
-        - SQSPollerPolicy:
+        - SQSSendMessagePolicy:
             QueueName: !Ref RawQueuePolicy
         # - SQSPollerPolicy:
         #     QueueName: !GetAtt RawQueuePolicy.Arn
@@ -152,6 +152,9 @@ Resources:
             Queue: !GetAtt RawQueue.Arn
             BatchSize: 10
             Enabled: true
+      Policies:
+      - SQSPollerPolicy:
+          QueueName: !Ref RawQueuePolicy
 
   ActivitiesTable:
     Type: AWS::DynamoDB::Table
@@ -181,7 +184,7 @@ Resources:
   RawQueue:
     Type: AWS::SQS::Queue
     Properties:
-      DelaySeconds: 0
+      DelaySeconds: 10
       # MessageRetentionPerion: 1209600
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt DeadLetter.Arn

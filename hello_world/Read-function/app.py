@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+import settings
 
 table_name = os.environ.get('TABLE', 'Activities')
 region = os.environ.get('REGION', 'us-east-2')
@@ -19,28 +20,10 @@ def lambda_handler(event, context):
     sqs = boto3.client('sqs')
 
     sqs_response = sqs.send_message(
-    QueueUrl=queue_url,
-    DelaySeconds=10,
-    MessageAttributes={
-        'Title': {
-            'DataType': 'String',
-            'StringValue': 'The Whistler'
-        },
-        'Author': {
-            'DataType': 'String',
-            'StringValue': 'John Grisham'
-        },
-        'WeeksOn': {
-            'DataType': 'Number',
-            'StringValue': '6'
-        }
-         },
-    MessageBody=(
-        'Information about current NY Times fiction bestseller for '
-        'week of 12/11/2016.'
-        )
+    QueueUrl = queue_url,
+    MessageBody = json.dumps(event['body'])
     )
-    print(sqs_response.get('MessageId'))
+    print(sqs_response.get('messageId'))
 
     table_response = table.get_item(
         Key={'id': activity}

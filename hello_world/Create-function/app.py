@@ -2,6 +2,7 @@ import json
 import os
 #import uuid
 import boto3
+import settings
 
 
 # import requests
@@ -29,28 +30,10 @@ def lambda_handler(event, context):
     sqs = boto3.client('sqs')
 
     sqs_response = sqs.send_message(
-    QueueUrl=queue_url,
-    DelaySeconds=10,
-    MessageAttributes={
-        'Title': {
-            'DataType': 'String',
-            'StringValue': 'The Whistler'
-        },
-        'Author': {
-            'DataType': 'String',
-            'StringValue': 'John Grisham'
-        },
-        'WeeksOn': {
-            'DataType': 'Number',
-            'StringValue': '6'
-        }
-         },
-    MessageBody=(
-        'Information about current NY Times fiction bestseller for '
-        'week of 12/11/2016.'
-        )
+    QueueUrl = queue_url,
+    MessageBody = json.dumps(event['body'])
     )
-    print(sqs_response.get('MessageId'))
+    print(sqs_response.get('messageId'))
 
     params = {
         'stage': activity['stage'], 
