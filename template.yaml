@@ -206,9 +206,11 @@ Resources:
         - Sid: Allow-User-SendMessage
           Effect: Allow
           Action:
-          - SQS:SendMessage
-          - SQS:ReceiveMessage
-          Resource: !GetAtt RawQueue.Arn
+            'SQS:*'
+          # - SQS:SendMessage
+          # - SQS:ReceiveMessage
+          # Resource: !GetAtt RawQueue.Arn
+          Resource: '*'
 
 
 Outputs:

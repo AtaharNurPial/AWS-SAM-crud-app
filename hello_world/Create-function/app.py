@@ -2,14 +2,12 @@ import json
 import os
 #import uuid
 import boto3
-import settings
-
 
 # import requests
 
 table_name = os.environ.get('TABLE', 'Activities')
 region = os.environ.get('REGION', 'us-east-2')
-queue_url = 'https://sqs.us-east-2.amazonaws.com/618758721119/sqs-practice-RawQueue-9TQ7R07SNNU6'
+queue_url = 'https://sqs.us-east-2.amazonaws.com/618758721119/sam-crud-RawQueue-5H7I5MQWO96P'
 
 def lambda_handler(event, context):
 

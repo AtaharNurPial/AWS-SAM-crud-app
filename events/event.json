@@ -1,5 +1,5 @@
 {
-  "body": "{\"stage\": \"new stage\",\"description\": \"New activity\"}",
+  "body": "{\"stage\": \"new stage\",\"description\": \"New activity\",\"messageId\": \"1234569\"}",
   "resource": "/{proxy+}",
   "path": "/path/to/resource",
   "httpMethod": "GET",

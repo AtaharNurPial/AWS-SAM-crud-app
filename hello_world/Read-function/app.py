@@ -1,11 +1,10 @@
 import json
 import os
 import boto3
-import settings
 
 table_name = os.environ.get('TABLE', 'Activities')
 region = os.environ.get('REGION', 'us-east-2')
-queue_url = 'https://sqs.us-east-2.amazonaws.com/618758721119/sqs-practice-RawQueue-9TQ7R07SNNU6'
+queue_url = 'https://sqs.us-east-2.amazonaws.com/618758721119/sam-crud-RawQueue-5H7I5MQWO96P'
 
 def lambda_handler(event, context):
 
@@ -34,5 +33,5 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'headers': {},
         # 'messageId': json.dumps(sqs_response['MessageId']),
-        'body': json.dumps({'ItemID': '1234569'})
+        'body': json.dumps({'message': 'message sent...'})
     }
