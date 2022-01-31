@@ -24,27 +24,11 @@ Parameters:
     Default: Activities
 
 Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function 
-    Properties:
-      CodeUri: hello_world/
-      Handler: app.lambda_handler     
-      # Architectures:
-      #   - x86_64
-      Events:
-        HelloWorld:
-          Type: Api 
-          Properties:
-            Path: /hello
-            Method: get
-
   CreateFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/Create-function/
       Handler: app.lambda_handler   
-      # Architectures:
-      #   - x86_64
       Environment:  
         Variables:
           TABLE: !Ref Table
@@ -61,18 +45,12 @@ Resources:
             TableName: !Ref ActivitiesTable
         - SQSSendMessagePolicy:
             QueueName: !Ref RawQueuePolicy
-        # - SQSPollerPolicy:
-        #     QueueName: !GetAtt RawQueuePolicy.Arn
-        # - RawQueuePolicy:
-        #     QueueName: !Ref RawQueue
 
   ReadFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/Read-function/
       Handler: app.lambda_handler     
-      # Architectures:
-      #   - x86_64
       Environment:  
         Variables:
           TABLE: !Ref Table
@@ -89,18 +67,12 @@ Resources:
             TableName: !Ref ActivitiesTable
         - SQSSendMessagePolicy:
             QueueName: !Ref RawQueuePolicy
-        # - SQSPollerPolicy:
-        #     QueueName: !GetAtt RawQueuePolicy.Arn
-        # - SQSPollerPolicy:
-        #     QueueName: !GetAtt RawQueue.RawQueuePolicy
 
   UpdateFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/Update-function/
       Handler: app.lambda_handler     
-      # Architectures:
-      #   - x86_64
       Environment:  
         Variables:
           TABLE: !Ref Table
@@ -115,16 +87,12 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
-        # - RawQueuePolicy:
-        #     QueueName: !Ref RawQueue
 
   DeleteFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/Delete-function/
       Handler: app.lambda_handler   
-      # Architectures:
-      #   - x86_64
       Environment:  
         Variables:
           TABLE: !Ref Table
@@ -139,8 +107,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ActivitiesTable
-        # - RawQueuePolicy:
-        #     QueueName: !Ref RawQueue
 
   TriggerFunction:
     Type: AWS::Serverless::Function
@@ -214,20 +180,19 @@ Resources:
           # Resource: !GetAtt RawQueue.Arn
           Resource: '*'
 
-
 Outputs:
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
   CreateFunctionApi:
     Description: "API Gateway endpoint URL for Prod stage for Create function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/activities/"
+  ReadFunctionApi:
+    Description: "API Gateway endpoint URL for Prod stage for Read function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/activities/{id}"
+  UpdateFunctionApi:
+    Description: "API Gateway endpoint URL for Prod stage for Update function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/activities/{id}"
+  DeleteFunctionApi:
+    Description: "API Gateway endpoint URL for Prod stage for Delete function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/activities/{id}/{date}"
 
   RawSqsUrl:
     Description: URL of the sqs event
